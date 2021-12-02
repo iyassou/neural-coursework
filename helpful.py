@@ -5,8 +5,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+# Can you tell this is being monkey-patched together?
 class VanillaUNET:
     DEFAULT_NUMBER_OF_CLASSES = 4
+device = torch.device('cuda:0')
+# anyway...
 
 CrossEntropyLoss = nn.CrossEntropyLoss
 
