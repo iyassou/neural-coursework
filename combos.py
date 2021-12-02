@@ -48,6 +48,7 @@ def parameters() -> List[List[Any]]:
     return [BATCH_SIZES, LOSS_FUNCTIONS, OPTIMISERS]
 
 def create_combos():
+    seed(420) # for repeatability
     params = parameters()
     combos = list(
         product(*[list(range(len(x))) for x in params])
@@ -61,7 +62,3 @@ def create_combos():
 def retrieve_combos(name) -> List[Tuple[int, int, int]]:
     with open(name, 'rb') as handle:
         return pickle.load(handle)
-
-if __name__ == '__main__':
-    seed(420) # for repeatability
-    create_combos()
