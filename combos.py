@@ -56,7 +56,7 @@ def create_combos():
     step = len(combos) // len(NAMES)
     for i, name in enumerate(NAMES):
         with open(name, 'wb') as handle:
-            pickle.dump(combos[i:i+step], handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(combos[i:i+step], handle, protocol=3) # because Python 3.6 in Colab
 
 def retrieve_combos(name) -> List[Tuple[int, int, int]]:
     with open(name, 'rb') as handle:
