@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+class VanillaUNET:
+    DEFAULT_NUMBER_OF_CLASSES = 4
+
 CrossEntropyLoss = nn.CrossEntropyLoss
 
 def SmoothDiceScore(x: torch.Tensor, y: torch.Tensor, class_labels: Iterable[int]=None, smooth: float=1.0) -> torch.Tensor:
