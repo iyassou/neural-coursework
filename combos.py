@@ -56,12 +56,32 @@ def create_combos():
     step = len(combos) // len(NAMES)
     for i, name in enumerate(NAMES):
         with open(name, 'wb') as handle:
-            pickle.dump(combos[i:i+step], handle, protocol=3) # because Python 3.6 in Colab
+            pickle.dump(combos[i*step:(i+1)*step], handle, protocol=3) # because Python 3.6 in Colab
 
 def retrieve_combos(name) -> List[Tuple[int, int, int]]:
     with open(name, 'rb') as handle:
         return pickle.load(handle)
 
+def sanity_check():
+    from typing import List, Tuple
+    combos: List[List[Tuple[int, int, int]]] = [retrieve_combos(name) for name in NAMES]
+    params = parameters()
+    # Do the combos have an intersection?
+    for x in combos:
+        for y in combos:
+            if x == y:
+                continue
+            assert not set(x).intersection(set(y)), 'common intersection'
+    # Do they add up to params?
+    summed_params = [set(), set(), set()]
+    for name in combos:
+        for x,y,z in name:
+            summed_params[0].add(params[0][x]) # batch_size
+            summed_params[1].add(params[1][y]) # loss function
+            summed_params[2].add(params[2][z]) # optimiser
+    assert all(len(set(params_orig).intersection(params_summed)) == len(params_orig) for params_orig, params_summed in zip(params, summed_params)), "don't add up"
+
 if __name__ == '__main__':
     seed(420) # for repeatability
     create_combos()
+    sanity_check()
